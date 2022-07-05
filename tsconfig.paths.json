@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "types": [
+        "../maintence-managment-app-back/types"
+      ]
+    }
+  }
+}
