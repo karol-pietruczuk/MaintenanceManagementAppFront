@@ -1,0 +1,24 @@
+.form-control {
+     display: flex;
+     padding-left: 24%;
+     /*width: 100vw;*/
+     top: 20px;
+}
+
+.form-label {
+    margin-left: 4vw;
+}
+
+.form-label__input {
+    width: 20vw;
+    /*margin-top: 4px;*/
+}
+
+.form-label__radio {
+ margin-top: 6px;
+}
+
+.form-label__button {
+    top: 5px;
+    left: 2vw;
+}
