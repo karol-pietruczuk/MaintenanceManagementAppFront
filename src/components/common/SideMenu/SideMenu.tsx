@@ -13,7 +13,7 @@ import {
     DrawerFooter,
 } from "@chakra-ui/react";
 import {HamburgerIcon} from "@chakra-ui/icons";
-import {LogoHeader} from "../common/LogoHeader";
+import {LogoHeader} from "../LogoHeader/LogoHeader";
 import {Nav} from "../Nav/Nav";
 import {Footer} from "../Footer/Footer";
 
@@ -29,8 +29,9 @@ export const SideMenu = () => {
                 icon={<HamburgerIcon/>}
                 aria-label='Options'
                 variant='outline'
-                marginTop={5}
-                marginLeft={5}
+                position={"fixed"}
+                top={5}
+                left={5}
             />
             <Drawer
                 isOpen={isOpen}
@@ -60,4 +61,4 @@ export const SideMenu = () => {
             </Drawer>
         </>
     );
-};
+}
