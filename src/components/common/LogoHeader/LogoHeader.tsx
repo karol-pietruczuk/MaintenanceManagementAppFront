@@ -1,4 +1,4 @@
-import logo from '../../img/logo.svg';
+import logo from '../../../img/logo.svg';
 import './LogoHeader.css';
 
 interface Props {
@@ -29,7 +29,7 @@ export const LogoHeader = (props: Props) => {
             <h2
                 style={{
                     fontSize: 14,
-                    display: !props.descriptionVisibility ? "none" : "block"
+                    display: !props.descriptionVisibility ? "non2e" : "block"
                 }}
             >
                 easier work, better work
