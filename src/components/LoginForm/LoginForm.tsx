@@ -1,27 +1,19 @@
 import { Input, Button } from '@chakra-ui/react'
 import './LoginForm.css';
-import {createRef, FormEvent, useContext, useEffect, useState} from "react";
+import {FormEvent, useContext, useEffect, useState} from "react";
 import {apiURL} from "../../config/api";
 import {AuthContext} from "../../context/AuthContext";
-import {handleBadResponse} from "../../utils/handleBadResponse";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
     setErrMsg: (errMsg: string) => void;
 }
 
 export const LoginForm = (props: Props) => {
-    const {setAccessToken} = useContext(AuthContext);
-    const {setRefreshToken} = useContext(AuthContext);
-    const {setUserEmail} = useContext(AuthContext)
-    const {setUserType} = useContext(AuthContext)
+    const {setUserEmail, setUserType, setAccessToken, setRefreshToken} = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [userRef, setUserRef] = useState(createRef<HTMLInputElement>());
-    // const [errRef, setErrRef] = useState(createRef<HTMLInputElement>());
-
-    // useEffect(() => {
-    //     userRef.current?.focus();
-    // }, []);
+    const navigate = useNavigate();
 
     useEffect(() => {
         props.setErrMsg('');
@@ -39,28 +31,40 @@ export const LoginForm = (props: Props) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
             });
 
-            handleBadResponse(response);
-
             const result = await response.json();
-            console.log(result);
-            setAccessToken(result?.accessToken);
-            setRefreshToken(result?.refreshToken);
+
             setUserEmail(email);
             setUserType(result?.userType);
+            setAccessToken(result?.accessToken);
+            setRefreshToken(result?.refreshToken);
+
+            window.localStorage.setItem('email', email);
+            window.localStorage.setItem('userType', result?.userType);
+            window.localStorage.setItem('accessToken', result?.accessToken);
+            window.localStorage.setItem('refreshToken', result?.refreshToken);
             setEmail('');
             setPassword('');
-            // navigate(from, { replace: true });
+            navigate('/task');
         } catch (err: any) {
             if (!err?.response) {
                 props.setErrMsg('No Server Response');
+            } else if (err?.response.status === 400) {
+                props.setErrMsg('Missing Username or Password');
+            } else if (err?.response.status === 401) {
+                props.setErrMsg('Unauthorized');
+            } else if (err?.response.status === 403) {
+                props.setErrMsg('Access Denied');
+            } else if (err?.response.status === 500) {
+                props.setErrMsg('Internal Server Error. Please, try again later.');
+            } else {
+                props.setErrMsg('Login failed');
             }
-            // errRef.current?.focus();
         }
-
-
     }
+
     return (
         <form
             onSubmit={handleSubmit}
@@ -71,7 +75,6 @@ export const LoginForm = (props: Props) => {
                     type="email"
                     width={200}
                     required
-                    // ref={userRef}
                     value={email}
                     onChange={(e) => {setEmail(e.target.value)}}
                 />
@@ -82,7 +85,6 @@ export const LoginForm = (props: Props) => {
                     type="password"
                     width={200}
                     required
-                    // ref={errRef}
                     value={password}
                     onChange={(e) => {setPassword(e.target.value)}}
                 />
