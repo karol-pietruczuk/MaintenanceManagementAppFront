@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {BrowserRouter} from "react-router-dom";
 import { extendTheme, ChakraProvider } from '@chakra-ui/react'
 import './index.css';
 import {App} from './App';
@@ -18,9 +19,12 @@ const theme = extendTheme({ colors })
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
     <ChakraProvider theme={theme}>
+        <BrowserRouter>
             <App />
+        </BrowserRouter>
     </ChakraProvider>
 );
 
